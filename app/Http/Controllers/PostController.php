@@ -29,7 +29,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'post' => 'required|max:255',
+            'article' => 'required',
+        ]);
+
+        $request->user()->posts()->create($request->only(['post', 'article']));
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -37,7 +44,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**
