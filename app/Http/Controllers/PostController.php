@@ -30,7 +30,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'post' => 'required|max:255',
+            'post' => 'required',
             'article' => 'required',
         ]);
 
@@ -52,6 +52,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -59,7 +60,14 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'post' => 'required',
+            'article' => 'required',
+        ]);
+
+        $post->update($request->only(['post', 'article']));
+
+        return redirect()->route('posts.show', $post);
     }
 
     /**
@@ -67,6 +75,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('posts.index');
     }
 }
